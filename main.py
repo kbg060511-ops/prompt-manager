@@ -19,6 +19,15 @@ prompts = [
     }
 ]
 
+categories = [
+    "텍스트 생성",
+    "이미지 생성",
+    "영상 생성",
+    "페르소나",
+    "자동화",
+    "기타"
+]
+
 
 def show_menu():
     print("\n=== 나만의 프롬프트 관리 ===")
@@ -32,12 +41,89 @@ def show_menu():
     print("0. 종료")
 
 
+def choose_category():
+    print("\n카테고리 선택:")
+
+    for i, category in enumerate(categories, start=1):
+        print(f"{i}) {category}")
+
+    print("7) 직접 입력")
+
+    while True:
+        choice = input("선택: ").strip()
+
+        if choice in ["1", "2", "3", "4", "5", "6"]:
+            return categories[int(choice) - 1]
+
+        if choice == "7":
+            while True:
+                category = input("카테고리 입력: ").strip()
+
+                if category:
+                    return category
+
+                print("카테고리를 입력해주세요.")
+
+        print("올바른 번호를 입력해주세요.")
+
+
+def add_prompt():
+    print("\n=== 프롬프트 추가 ===")
+
+    while True:
+        title = input("제목: ").strip()
+        if title:
+            break
+        print("제목을 입력해주세요.")
+
+    while True:
+        content = input("내용: ").strip()
+        if content:
+            break
+        print("내용을 입력해주세요.")
+
+    category = choose_category()
+
+    prompts.append({
+        "title": title,
+        "content": content,
+        "category": category,
+        "favorite": False
+    })
+
+    print("프롬프트가 추가되었습니다!")
+
+
+def show_list():
+    print("\n=== 프롬프트 목록 ===")
+
+    if not prompts:
+        print("등록된 프롬프트가 없습니다.")
+        return
+
+    for i, prompt in enumerate(prompts, start=1):
+        star = " ⭐" if prompt["favorite"] else ""
+        print(f'{i}. [{prompt["category"]}] {prompt["title"]}{star}')
+
+    print(f"\n총 {len(prompts)}개의 프롬프트")
+
+
 while True:
     show_menu()
-    choice = input("선택: ")
+    choice = input("선택: ").strip()
 
-    if choice == "0":
+    if choice == "1":
+        add_prompt()
+
+    elif choice == "2":
+        show_list()
+
+    elif choice == "0":
         print("프로그램을 종료합니다.")
         break
-    else:
+
+    elif choice in ["3", "4", "5", "6", "7"]:
         print("아직 구현되지 않은 기능입니다.")
+
+    else:
+        print("잘못된 번호입니다. 다시 입력해주세요.")
