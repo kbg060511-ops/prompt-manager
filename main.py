@@ -202,6 +202,34 @@ def show_detail():
     print("────────────────────────────")
 
 
+def manage_favorite():
+    print("\n=== 즐겨찾기 관리 ===")
+
+    if not prompts:
+        print("등록된 프롬프트가 없습니다.")
+        return
+
+    try:
+        number = int(input("프롬프트 번호 입력: ").strip())
+    except ValueError:
+        print("숫자를 입력해주세요.")
+        return
+
+    index = number - 1
+
+    if index < 0 or index >= len(prompts):
+        print("잘못된 번호입니다.")
+        return
+
+    prompt = prompts[index]
+    prompt["favorite"] = not prompt["favorite"]
+
+    if prompt["favorite"]:
+        print(f'\'{prompt["title"]}\' 프롬프트를 즐겨찾기에 추가했습니다!')
+    else:
+        print(f'\'{prompt["title"]}\' 프롬프트를 즐겨찾기에서 해제했습니다!')
+
+
 while True:
     show_menu()
     choice = input("선택: ").strip()
@@ -221,11 +249,14 @@ while True:
     elif choice == "5":
         show_detail()
 
+    elif choice == "6":
+        manage_favorite()
+
     elif choice == "0":
         print("프로그램을 종료합니다.")
         break
 
-    elif choice in ["6", "7"]:
+    elif choice in ["7"]:
         print("아직 구현되지 않은 기능입니다.")
 
     else:
